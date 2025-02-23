@@ -6,95 +6,86 @@ import 'izitoast/dist/css/iziToast.min.css';
 const refs = {  
   form: document.querySelector('#search-form'),  
   input: document.querySelector('#search-input'),  
-  loader: document.querySelector('#loader'), // Индикатор загрузки  
+  loader: document.querySelector('#loader'),  
   gallery: document.querySelector('#gallery'),  
-  loadMoreButton: document.querySelector('.load-more-button'), // Кнопка "Load more"  
+  loadMoreButton: document.querySelector('.load-more-button'),  
 };  
 
-// Обработчик события отправки формы  
 refs.form.addEventListener('submit', handleFormSubmit);  
-refs.loadMoreButton.addEventListener('click', handleLoadMore); // Обработчик события нажатия на кнопку "Load more"  
+refs.loadMoreButton.addEventListener('click', handleLoadMore);  
 
-// Функция обработки отправки формы  
 async function handleFormSubmit(event) {  
   event.preventDefault();  
   const query = refs.input.value.trim();  
 
   if (!query) {  
-    showError('Please enter a search term!'); // Сообщение об ошибке, если запрос пустой  
-    clearGallery(); // Очистка галереи при пустом запросе 
+    showError('Please enter a search term!');  
+    clearGallery();  
     return;  
   }  
 
-  resetPage(); // Сброс номера страницы  
-  setQuery(query); // Установка текущего запроса  
-  clearGallery(); // Очистка галереи  
+  resetPage();  
+  setQuery(query);  
+  clearGallery();  
 
-  showLoader(); // Показать загрузчик перед началом загрузки изображений  
+  showLoader();  
 
   try {  
-    const data = await fetchImages(query); // Получение изображений  
-    handleImageFetchResponse(data); // Обработка ответа  
+    const data = await fetchImages(query);  
+    handleImageFetchResponse(data);  
   } catch (error) {  
-    showError('Something went wrong! Please try again later.'); // Сообщение об ошибке  
+    showError('Something went wrong! Please try again later.');  
   } finally {  
-    hideLoader(); // Скрыть загрузчик после завершения загрузки  
+    hideLoader();  
   }  
 
-  refs.input.value = ''; // Очистка поля ввода  
+  refs.input.value = '';  
 }  
 
-// Функция обработки нажатия на кнопку "Load more"  
 async function handleLoadMore() {  
-  const query = getCurrentQuery(); // Получение текущего запроса  
-  incrementPage(); // Увеличение номера страницы  
+  const query = getCurrentQuery();  
+  incrementPage();  
 
-  showLoader(); // Показать загрузчик перед началом загрузки дополнительных изображений  
+  showLoader();  
 
   try {  
-    const data = await fetchImages(query); // Получение дополнительных изображений  
-    handleImageFetchResponse(data); // Обработка ответа  
+    const data = await fetchImages(query);  
+    handleImageFetchResponse(data);  
   } catch (error) {  
-    showError('Something went wrong! Please try again later.'); // Сообщение об ошибке  
+    showError('Something went wrong! Please try again later.');  
   } finally {  
-    hideLoader(); // Скрыть загрузчик после завершения загрузки  
+    hideLoader();  
   }  
 }  
 
-// Функция обработки ответа с изображениями  
 function handleImageFetchResponse(data) {  
-  const { hits, totalHits } = data; // Извлечение изображений и общего количества  
+  const { hits, totalHits } = data;  
 
   if (hits.length === 0) {  
-    // Если нет изображений  
-    showInfo('Sorry, there are no images matching your search query. Please try again!'); // Сообщение, если нет изображений  
-    refs.loadMoreButton.classList.add('hidden'); // Скрытие кнопки "Load more"  
-    return; // Выход из функции, чтобы не показывать другие сообщения  
+    showInfo('Sorry, there are no images matching your search query. Please try again!');  
+    refs.loadMoreButton.classList.add('hidden');  
+    return;  
   }  
 
-  renderGallery(hits); // Отображение изображений  
-  refs.loadMoreButton.classList.remove('hidden'); // Показ кнопки "Load more"  
+  renderGallery(hits);  
+  refs.loadMoreButton.classList.remove('hidden');  
 
-  // Проверка, достигнут ли конец коллекции изображений  
   if (hits.length < 40 || totalHits <= refs.gallery.children.length) {  
-    refs.loadMoreButton.classList.add('hidden'); // Скрытие кнопки "Load more"  
-    showInfo("We're sorry, but you've reached the end of search results."); // Сообщение о конце коллекции  
+    refs.loadMoreButton.classList.add('hidden');  
+    showInfo("We're sorry, but you've reached the end of search results.");  
   }  
 
-  scrollToNewItems(); // Прокрутка к новым элементам  
+  scrollToNewItems();  
 }  
 
-// Функция для отображения загрузчика  
 function showLoader() {  
-  refs.loader.classList.remove('hidden'); // Убираем класс 'hidden', чтобы показать загрузчик  
+  refs.loader.classList.remove('hidden');  
 }  
 
-// Функция для скрытия загрузчика  
 function hideLoader() {  
-  refs.loader.classList.add('hidden'); // Добавляем класс 'hidden', чтобы скрыть загрузчик  
+  refs.loader.classList.add('hidden');  
 }  
 
-// Функция для отображения сообщения об ошибке  
 function showError(message) {  
   iziToast.error({  
     title: 'Error',  
@@ -104,7 +95,6 @@ function showError(message) {
   });  
 }  
 
-// Функция для отображения информационного сообщения  
 function showInfo(message) {  
   iziToast.info({  
     title: '',  
@@ -114,103 +104,15 @@ function showInfo(message) {
   });  
 }  
 
-// Функция для очистки галереи  
 function clearGallery() {  
   refs.gallery.innerHTML = '';  
 }  
 
-// Функция для плавной прокрутки к новым элементам  
 function scrollToNewItems() {  
-  const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect(); // Получение высоты карточки  
+  const { height: cardHeight } = refs.gallery.firstElementChild.getBoundingClientRect();  
   window.scrollBy({  
-    top: cardHeight * 2, // Прокрутка на две высоты карточки  
+    top: cardHeight * 2,  
     behavior: 'smooth',  
   });  
 }
-
-
-
-// import { fetchImages } from './js/pixabay-api.js';
-// import { renderGallery } from './js/render-functions.js';
-// import iziToast from 'izitoast';
-// import 'izitoast/dist/css/iziToast.min.css';
-
-// const refs = {
-//   form: document.querySelector('#search-form'),
-//   input: document.querySelector('#search-input'),
-//   loader: document.querySelector('#loader'),
-//   gallery: document.querySelector('#gallery'),
-// };
-
-// function showLoader() {
-//   refs.loader.classList.remove('hidden');
-// }
-
-// function hideLoader() {
-//   refs.loader.classList.add('hidden');
-// }
-
-// function showError(message) {
-//   iziToast.error({
-//     title: 'Error',
-//     message,
-//     position: 'topRight',
-//     timeout: 2000,
-//   });
-// }
-
-// function showInfo(message) {
-//   iziToast.info({
-//     title: '',
-//     message,
-//     position: 'topRight',
-//     timeout: 3000,
-//   });
-// }
-
-// function clearGallery() {  
-//   refs.gallery.innerHTML = '';
-// }  
-
-// function handleFormSubmit(event) {
-//   event.preventDefault();
-//   const query = refs.input.value.trim();
-
-//   if (!query) {
-//     showError('Please enter a search term!');
-//     clearGallery(); 
-//     return;
-//   }
-
-// clearGallery(); 
-
-//   fetchImagesWithLoader(query);
-//   refs.input.value = '';
-// }
-
-// function fetchImagesWithLoader(query) {
-//   showLoader();
-
-//   fetchImages(query)
-//     .then(images => {
-//       hideLoader();
-//       handleImageFetchResponse(images);
-//     })
-//     .catch(error => {
-//       hideLoader();
-//       showError('Something went wrong! Please try again later.');
-//       console.error('Error fetching images:', error);
-//     });
-// }
-
-// function handleImageFetchResponse(images) {
-//   if (images.length === 0) {
-//     showInfo('Sorry, there are no images matching your search query. Please try again!');
-//   } else {
-//     renderGallery(images);
-//   }
-// }
-
-// refs.form.addEventListener('submit', handleFormSubmit);
-
 
