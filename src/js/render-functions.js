@@ -1,8 +1,9 @@
 import SimpleLightbox from 'simplelightbox';  
 import 'simplelightbox/dist/simple-lightbox.min.css';  
 
-let lightbox;  
+let lightbox;  // Переменная для инициализации lightbox
 
+// Функция для инициализации lightbox 
 function initializeLightbox() {  
   lightbox = new SimpleLightbox('.gallery a', {  
     captionsData: 'alt',  
@@ -13,20 +14,20 @@ function initializeLightbox() {
   });  
 }  
 
+// Функция для отображения галереи изображений  
 export function renderGallery(images) {  
   const gallery = document.querySelector('#gallery');  
-  gallery.innerHTML = '';  
-
   const markup = images.map(createGalleryItem).join('');  
-  gallery.innerHTML = markup;  
+  gallery.insertAdjacentHTML('beforeend', markup);  // Добавляем новые элементы в галерею 
 
   if (!lightbox) {  
-    initializeLightbox();  
+    initializeLightbox();  // Инициализация lightbox, если он еще не инициализирован
   } else {  
-    lightbox.refresh(); 
+    lightbox.refresh();  // Обновление lightbox при добавлении новых изображений
   }  
 }  
 
+// Функция для создания элемента галереи 
 function createGalleryItem({  
   largeImageURL,  
   webformatURL,  
@@ -47,3 +48,55 @@ function createGalleryItem({
       </div>  
     </a>`;  
 }
+
+
+
+// import SimpleLightbox from 'simplelightbox';  
+// import 'simplelightbox/dist/simple-lightbox.min.css';  
+
+// let lightbox;  
+
+// function initializeLightbox() {  
+//   lightbox = new SimpleLightbox('.gallery a', {  
+//     captionsData: 'alt',  
+//     captionDelay: 250,  
+//     captionPosition: 'bottom',  
+//     overlayOpacity: 1,  
+//     showCounter: false,  
+//   });  
+// }  
+
+// export function renderGallery(images) {  
+//   const gallery = document.querySelector('#gallery');  
+//   gallery.innerHTML = '';  
+
+//   const markup = images.map(createGalleryItem).join('');  
+//   gallery.innerHTML = markup;  
+
+//   if (!lightbox) {  
+//     initializeLightbox();  
+//   } else {  
+//     lightbox.refresh(); 
+//   }  
+// }  
+
+// function createGalleryItem({  
+//   largeImageURL,  
+//   webformatURL,  
+//   tags,  
+//   likes,  
+//   views,  
+//   comments,  
+//   downloads,  
+// }) {  
+//   return `  
+//     <a href="${largeImageURL}" class="gallery-item">  
+//       <img src="${webformatURL}" alt="${tags}" />  
+//       <div class="image-info">  
+//         <p><strong>Likes</strong> ${likes}</p>  
+//         <p><strong>Views</strong> ${views}</p>  
+//         <p><strong>Comments</strong> ${comments}</p>  
+//         <p><strong>Downloads</strong> ${downloads}</p>  
+//       </div>  
+//     </a>`;  
+// }

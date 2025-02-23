@@ -28,7 +28,35 @@ h1 {
   letter-spacing: 0.04em;
   color: #363636;
   line-height: 1.5;
-}
+  animation: fadeInOut 10s infinite; 
+  text-shadow: 0 0 5px rgba(112, 114, 251, 0.7), 
+               0 0 10px rgba(112, 114, 251, 0.5),  
+               0 0 15px rgba(112, 114, 251, 0.4);
+}  
+
+
+@keyframes fadeInOut {  
+  0% {  
+     opacity: 0;
+    color: #fbfbfb; 
+  }  
+  25% {  
+     opacity: 1;
+    color: #3591fb; 
+  }  
+  50% {  
+     opacity: 1;
+    color: #3737fa;  
+  }  
+  75% {  
+     opacity: 1;
+    color: #3a25f7; 
+  }  
+  100% {  
+     opacity: 0;
+    color: #2150fb; 
+  }  
+} 
 
 #search-form {
   margin: 20px;
@@ -50,7 +78,9 @@ h1 {
 #search-input:focus {
   outline: none;
   border-color: #4e75ff;
-  transition: border-color 0.5s;
+  box-shadow: 0 0 5px #98a9e5, 0 0 10px #7f7ff9;
+  transition: border-color 0.5s, box-shadow 0.5s;
+  /* transition: border-color 0.5s; */
 }
 
 button {
@@ -74,6 +104,62 @@ button:focus {
   color: #fff;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
+ 
+
+.load-more-button {
+  font-family: Montserrat, sans-serif;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 130px;
+  height: 40px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #4e75ff;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+/* .load-more-button {
+  background-color: #4e75ff;
+  border: 0;
+  border-radius: 56px;
+  padding: 8px 16px;
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  outline: 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.load-more-button:before {
+  background-color: initial;
+  background-image: linear-gradient(#fff 0, rgba(255, 255, 255, 0) 100%);
+  border-radius: 125px;
+  content: "";
+  height: 50%;
+  left: 4%;
+  opacity: .5;
+  position: absolute;
+  top: 0;
+  transition: all .3s;
+  width: 92%;
+}
+
+.load-more-button:hover {
+  box-shadow: rgba(237, 240, 243, 0.2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
+  transform: scale(1.05);
+} */
+
 
 #gallery {
   display: grid;
